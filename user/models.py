@@ -12,10 +12,10 @@ class User(AbstractBaseUser):
         user password -> 일단 디폴트
     '''
 
-    profile_image = models.TextField()  # 길이 제한 없음
-    nickname = models.CharField(max_length=24, unique=True)  # 길이 제한 있음
-    name = models.CharField(max_length=24)
     email = models.EmailField(unique=True)
+    name = models.CharField(max_length=24)  # 길이 제한 있음
+    nickname = models.CharField(max_length=24, unique=True)
+    profile_image = models.TextField()  # 길이 제한 없음
 
     USERNAME_FIELD = 'nickname'
 
