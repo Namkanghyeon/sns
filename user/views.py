@@ -30,4 +30,17 @@ class Login(APIView):
         return render(request, 'user/login.html')
 
     def post(self, request):
-        pass
+        email = request.data.get('email', None)
+        password = request.data.get('password', None)
+
+        user = User.objects.filter(email=email).first()
+
+        if user is None:
+            return Response(status=404, data=dict(message="회원정보가 잘못되었습니다."))
+
+        if user.check_password(password):
+            # TODO 세션에 로그인 정보 넣기
+            return Response(status=200)
+        else:
+            return Response(status=404, data=dict(message="회원정보가 잘못되었습니다."))
+
