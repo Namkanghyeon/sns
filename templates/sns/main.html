@@ -5,6 +5,10 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
+    <!-- 이거 해야 urls.py에서 경로 읽어오기 가능
+    => get_media_prefix 사용 가능 -->
+    {% load static %}
+
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
@@ -109,7 +113,7 @@
                 </div>
                 <div>
                     <img width=100% height=100%
-                         src="{{ feed.image }}"/>
+                         src="{% get_media_prefix %}{{ feed.image }}"/>
                 </div>
                 <div style="margin: 0 10px; display: flex; flex-direction: row; justify-content: space-between">
                     <div>
@@ -353,6 +357,7 @@
             },
             complete: function () {
                 console.log('완료');
+                location.replace('/main');
             }
         })
     })
