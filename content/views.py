@@ -2,6 +2,7 @@ from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from .models import Feed
+from user.models import User
 from sns.settings import MEDIA_ROOT
 import os
 from uuid import uuid4
@@ -9,8 +10,16 @@ from uuid import uuid4
 
 class Main(APIView):
     def get(self, request):
+        email = request.session['email']
+        if email is None:
+            return render(request, 'user/login.html')
+
+        user = User.objects.filter(email=email).first()
+        if user is None:
+            return render(request, 'user/login.html')
+
         feed_list = Feed.objects.all().order_by('-id')  # select * from content_feed
-        return render(request, 'sns/main.html', context=dict(feed_list=feed_list))
+        return render(request, 'sns/main.html', context=dict(feed_list=feed_list, user=user))
 
 
 class UploadFeed(APIView):

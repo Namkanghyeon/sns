@@ -39,7 +39,8 @@ class Login(APIView):
             return Response(status=404, data=dict(message="회원정보가 잘못되었습니다."))
 
         if user.check_password(password):
-            # TODO 세션에 로그인 정보 넣기
+            # 세션에 로그인 정보 넣기
+            request.session['email'] = email
             return Response(status=200)
         else:
             return Response(status=404, data=dict(message="회원정보가 잘못되었습니다."))
