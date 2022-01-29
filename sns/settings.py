@@ -38,7 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # 생성한 app들은 여기에 추가해줘야 나중에 모델을 db로 migration할 때 자동으로 해줌
     'sns',
-    'content'
+    'content',
+    'user'
 ]
 
 MIDDLEWARE = [
@@ -126,3 +127,6 @@ MEDIA_URL = '/media/'  # 항상 /로 끝나도록 설정
 
 # 업로드된 파일을 저장할 디렉토리 경로
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# 커스텀 유저 모델 사용
+AUTH_USER_MODEL = 'user.User'
