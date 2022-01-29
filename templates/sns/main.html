@@ -1,0 +1,416 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+
+    <!-- Google Material Icons -->
+    <link href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp"
+          rel="stylesheet">
+
+    <!-- jQuery -->
+    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+
+    <title>Hello, world!</title>
+    <style>
+        .icon_buttons {
+            cursor: pointer;
+        }
+
+        .box {
+            width: 150px;
+            height: 150px;
+            border-radius: 70%;
+            overflow: hidden;
+        }
+
+        .profile {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .modal_overlay {
+            width: 100%;
+            height: 100%;
+            position: fixed;
+            left: 0;
+            top: 0;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(1.5px);
+            -webkit-backdrop-filter: blur(1.5px);
+        }
+
+        .modal_window {
+            background: white;
+            backdrop-filter: blur(13.5px);
+            -webkit-backdrop-filter: blur(13.5px);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            width: 800px;
+            height: 600px;
+            position: relative;
+            padding: 10px;
+        }
+
+        .image_upload_title {
+            width: 100%;
+            height: 30px;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light" style="position: fixed; width: 100%; height: 56px">
+    <div class="container-fluid"
+         style="justify-content: space-between; flex-wrap: nowrap; min-width: 1000px; height: 40px">
+        <a class="navbar-brand" href="#">
+            <img style="width: 100px"
+                 src="https://www.instagram.com/static/images/web/mobile_nav_type_logo.png/735145cfe0a4.png">
+        </a>
+        <input style="width: 400px; box-shadow: none" class="form-control me-2" type="search" placeholder="Search"
+               aria-label="Search">
+        <div class="icon_buttons">
+            <span class="material-icons">home</span>
+            <span class="material-icons-outlined">send</span>
+            <span id="nav_bar_add_box" class="material-icons-outlined">add_box</span>
+            <span class="material-icons-outlined">explore</span>
+            <span class="material-icons-outlined">favorite_border</span>
+        </div>
+    </div>
+</nav>
+
+<div style="display: flex; flex-display: row; justify-content: center; padding-top: 56px; background-color: white">
+    <div id="left-page" style="width: 500px; height: 1000px; margin-right: 300px">
+        {% for feed in feed_list %}
+            <!-- 피드박스 -->
+            <div style="border: solid 1px gray; background-color: white; margin: 20px 0">
+                <div style="margin: 0 10px; display: flex; flex-direction: row; align-items: center; padding: 5px">
+                    <div class="box" style="width: 50px; height: 50px; margin-right: 10px">
+                        <img class="profile"
+                             src="{{ feed.profile_image }}"/>
+                    </div>
+                    <div>
+                        {{ feed.user_id }}
+                    </div>
+                </div>
+                <div>
+                    <img width=100% height=100%
+                         src="{{ feed.image }}"/>
+                </div>
+                <div style="margin: 0 10px; display: flex; flex-direction: row; justify-content: space-between">
+                    <div>
+                        <span class="material-icons-outlined">favorite_border</span>
+                        <span class="material-icons-outlined">mode_comment</span>
+                        <span class="material-icons-outlined">send</span>
+                    </div>
+                    <div>
+                        <span class="material-icons-outlined">bookmark_border</span>
+                    </div>
+                </div>
+                <div style="margin: 0 10px; text-align: left; font-size: 14px">강현이 <b>외 {{ feed.like_count }}명</b>이
+                    좋아합니다
+                </div>
+                <div style="margin: 0 10px; text-align: left; font-size: 15px">
+                    <b>{{ feed.user_id }}</b>{{ feed.content }}</div>
+                <div style="margin: 0 10px; text-align: left; font-size: 12px; color: gray">댓글 10개 모두 보기</div>
+                <div style="margin: 0 10px; text-align: left; font-size: 15px"><b>hyeonye458</b> 와 나도 넘모 가고싶당!</div>
+                <div style="margin: 0 10px; text-align: left; font-size: 15px"><b>ohmy458</b> 와 나도 넘모 가고싶당!</div>
+                <div style="border-top: 1px solid gray">
+                    <input style="box-shadow: none; border: none;" type="text" class="form-control" placeholder="댓글 달기">
+                </div>
+            </div>
+            <!-- 피드박스 -->
+        {% endfor %}
+    </div>
+    <div id="right-page" style="width: 400px; min-width: 300px; height: 1000px; position: fixed; left: 62%">
+        <div id="myprofile"
+             style="margin: 0 10px; display: flex; flex-direction: row; align-items: center; padding: 5px">
+            <div class="box" style="width: 70px; height: 70px; margin-right: 10px">
+                <img class="profile"
+                     src="https://mblogthumb-phinf.pstatic.net/20160625_210/bjy0524_1466833747375ihpeN_PNG/%B7%BF%C3%F7%B8%C1%B0%ED%B6%F3%C0%CC%BE%F0%BB%E7%C1%F8.png?type=w800"/>
+            </div>
+            <div style="text-align: left;">
+                <div style="font-width: bold;">
+                    andy0011
+                </div>
+                <div style="color: gray; font-size: 14px">
+                    kanghyeon nam
+                </div>
+            </div>
+        </div>
+        <div id="recommendation"
+             style="display: flex; flex-direction: row; justify-content: space-between; margin: 5px 0">
+            <div style="font-weight: bold; color: gray">회원님을 위한 추천</div>
+            <div><a href="" style="color: black; text-decoration: none; font-size: 12px; font-weight: bold">모두 보기</a>
+            </div>
+        </div>
+        <div style="margin: 0 10px; display: flex; flex-direction: row; align-items: center; justify-content: space-between;">
+            <div style="display: flex; flex-direction: row; align-items: center;">
+                <div class="box" style="width: 35px; height: 35px; margin-right: 10px">
+                    <img class="profile"
+                         src="https://mblogthumb-phinf.pstatic.net/20160625_210/bjy0524_1466833747375ihpeN_PNG/%B7%BF%C3%F7%B8%C1%B0%ED%B6%F3%C0%CC%BE%F0%BB%E7%C1%F8.png?type=w800"/>
+                </div>
+                <div style="text-align: left;">
+                    <div style="font-width: bold;">
+                        fighting!!!
+                    </div>
+                    <div style="color: gray; font-size: 14px">
+                        hyeonye123님 외 34명이 팔로우합니다
+                    </div>
+                </div>
+            </div>
+            <div>
+                <a href="" style="color: blue; text-decoration: none; font-size: 14px; font-weight: bold;">팔로우</a>
+            </div>
+        </div>
+        <div style="margin: 0 10px; display: flex; flex-direction: row; align-items: center; justify-content: space-between;">
+            <div style="display: flex; flex-direction: row; align-items: center;">
+                <div class="box" style="width: 35px; height: 35px; margin-right: 10px">
+                    <img class="profile"
+                         src="https://mblogthumb-phinf.pstatic.net/20160625_210/bjy0524_1466833747375ihpeN_PNG/%B7%BF%C3%F7%B8%C1%B0%ED%B6%F3%C0%CC%BE%F0%BB%E7%C1%F8.png?type=w800"/>
+                </div>
+                <div style="text-align: left;">
+                    <div style="font-width: bold;">
+                        fighting!!!
+                    </div>
+                    <div style="color: gray; font-size: 14px">
+                        hyeonye123님 외 34명이 팔로우합니다
+                    </div>
+                </div>
+            </div>
+            <div>
+                <a href="" style="color: blue; text-decoration: none; font-size: 14px; font-weight: bold;">팔로우</a>
+            </div>
+        </div>
+        <div style="margin: 0 10px; display: flex; flex-direction: row; align-items: center; justify-content: space-between;">
+            <div style="display: flex; flex-direction: row; align-items: center;">
+                <div class="box" style="width: 35px; height: 35px; margin-right: 10px">
+                    <img class="profile"
+                         src="https://mblogthumb-phinf.pstatic.net/20160625_210/bjy0524_1466833747375ihpeN_PNG/%B7%BF%C3%F7%B8%C1%B0%ED%B6%F3%C0%CC%BE%F0%BB%E7%C1%F8.png?type=w800"/>
+                </div>
+                <div style="text-align: left;">
+                    <div style="font-width: bold;">
+                        fighting!!!
+                    </div>
+                    <div style="color: gray; font-size: 14px">
+                        hyeonye123님 외 34명이 팔로우합니다
+                    </div>
+                </div>
+            </div>
+            <div>
+                <a href="" style="color: blue; text-decoration: none; font-size: 14px; font-weight: bold;">팔로우</a>
+            </div>
+        </div>
+        <div style="margin: 0 10px; display: flex; flex-direction: row; align-items: center; justify-content: space-between;">
+            <div style="display: flex; flex-direction: row; align-items: center;">
+                <div class="box" style="width: 35px; height: 35px; margin-right: 10px">
+                    <img class="profile"
+                         src="https://mblogthumb-phinf.pstatic.net/20160625_210/bjy0524_1466833747375ihpeN_PNG/%B7%BF%C3%F7%B8%C1%B0%ED%B6%F3%C0%CC%BE%F0%BB%E7%C1%F8.png?type=w800"/>
+                </div>
+                <div style="text-align: left;">
+                    <div style="font-width: bold;">
+                        fighting!!!
+                    </div>
+                    <div style="color: gray; font-size: 14px">
+                        hyeonye123님 외 34명이 팔로우합니다
+                    </div>
+                </div>
+            </div>
+            <div>
+                <a href="" style="color: blue; text-decoration: none; font-size: 14px; font-weight: bold;">팔로우</a>
+            </div>
+        </div>
+        <div style="margin: 0 10px; display: flex; flex-direction: row; align-items: center; justify-content: space-between;">
+            <div style="display: flex; flex-direction: row; align-items: center;">
+                <div class="box" style="width: 35px; height: 35px; margin-right: 10px">
+                    <img class="profile"
+                         src="https://mblogthumb-phinf.pstatic.net/20160625_210/bjy0524_1466833747375ihpeN_PNG/%B7%BF%C3%F7%B8%C1%B0%ED%B6%F3%C0%CC%BE%F0%BB%E7%C1%F8.png?type=w800"/>
+                </div>
+                <div style="text-align: left;">
+                    <div style="font-width: bold;">
+                        fighting!!!
+                    </div>
+                    <div style="color: gray; font-size: 14px">
+                        hyeonye123님 외 34명이 팔로우합니다
+                    </div>
+                </div>
+            </div>
+            <div>
+                <a href="" style="color: blue; text-decoration: none; font-size: 14px; font-weight: bold;">팔로우</a>
+            </div>
+        </div>
+        <div style="margin-top: 40px; font-size: 12px; color: gray; text-align: left">소개 채용정보 도움말 API<br>개인정보처리방침 약관 위치
+            인기계정 해시태그 언어
+        </div>
+        <div style="margin-top: 20px; font-size: 12px; color: gray; text-align: left">@2022 copyright by nam</div>
+    </div>
+</div>
+
+<!-- first modal -->
+<div id="first_modal" class="modal_overlay">
+    <div class="modal_window">
+        <div class="image_upload_title">
+            <div style="width: 40px;"></div>
+            <div style="font-size: 20px; font-weight: bold">
+                새 이미지 업로드
+            </div>
+            <div style="width: 40px; display: flex; justify-content: center; align-items: center;">
+                <span class="material-icons-outlined">close</span>
+            </div>
+        </div>
+        <div class="image_upload_space" style="border: 1px dashed gray; border-radius: 20px;height: 92%;"></div>
+    </div>
+</div>
+
+<!-- second modal -->
+<div id="second_modal" class="modal_overlay">
+    <div class="modal_window">
+        <div class="image_upload_title">
+            <div style="width: 40px;"></div>
+            <div style="font-size: 20px; font-weight: bold">
+                새 이미지 업로드
+            </div>
+            <div style="width: 40px; display: flex; justify-content: center; align-items: center;">
+                <span class="material-icons-outlined">close</span>
+            </div>
+        </div>
+        <div style="display: flex; flex-direction: row; height: 90%; border-top: 1px gray solid">
+            <div class="image_upload_space" style="flex: 3; width: 100%; height: 100%; margin-right: 10px;"></div>
+            <div style="flex: 2; border-left: 1px gray solid; border-right: 1px gray solid">
+                <div style="margin-top: 20px; width: 100%; height: 90%">
+                    <textarea id="input_feed_content"
+                              class="form-control" id="exampleFormControlTextarea1" rows="3"
+                              placeholder="무슨 일이 벌어지고 있나요?"
+                              style="width: 100%; height: 100%; resize: none; border: none; box-shadow: none;"></textarea>
+                </div>
+                <button id="feed_create_button" type="button" class="btn btn-primary" style="width: 100%">
+                    공유하기
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-------------------------------------------------------------------------------------------------------->
+<!-- Bootstrap Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+        crossorigin="anonymous"></script>
+
+<!-- jQuery -->
+<script>
+    let files;
+
+    $('#nav_bar_add_box').click(function () {
+        $('#first_modal').css({
+            display: 'flex',
+        });
+        $(document.body).css({
+            overflow: 'hidden'
+        })
+    });
+    $('#feed_create_button').click(function () {
+        alert('공유 눌렀음')
+
+        const file = files[0];
+        const image = files[0].name;
+        const content = $('#input_feed_content').val();
+        const user_id = 'andy0011'; // 일단 하드코딩
+        const profile_image = 'https://w.namu.la/s/2294cebccfe53949b3ba77d247da7421078f45fe2f0e0bb8dc461dab9826b7f9863d6fdf736af793d1fab7edeffc5beb7dbeca05438e4c97a5478f3955dc3dc264a2b32f2d008fc257401ea5f522c77a'; // 일단 하드코딩
+
+        const fd = new FormData();
+        fd.append('file', file);
+        fd.append('image', image);
+        fd.append('content', content);
+        fd.append('user_id', user_id);
+        fd.append('profile_image', profile_image);
+
+        $.ajax({
+            url: "/content/upload",
+            data: fd,
+            method: "POST",
+            processData: false, // default
+            contentType: false, // default
+            success: function (data) {
+                console.log('성공');
+            },
+            error: function (request, status, error) {
+                console.log('에러');
+            },
+            complete: function () {
+                console.log('완료');
+            }
+        })
+    })
+
+    $('.image_upload_space')
+        .on("dragover", dragOver)
+        .on("dragleave", dragOver)
+        .on("drop", uploadFiles);
+
+    function dragOver(e) {
+        e.stopPropagation();
+        e.preventDefault();
+
+        if (e.type == "dragover") {
+            $(e.target).css({
+                backgroundColor: "gray",
+                outlineOffset: "-20px"
+            });
+        } else {
+            $(e.target).css({
+                backgroundColor: "white",
+                outlineOffset: "-10px"
+            });
+        }
+    }
+
+    function uploadFiles(e) {
+        e.stopPropagation();
+        e.preventDefault();
+
+        e.dataTransfer = e.originalEvent.dataTransfer; //2
+        files = e.target.files || e.dataTransfer.files;
+
+        if (files.length > 1) {
+            alert('하나만 올려주세요');
+            return;
+        }
+
+        if (files[0].type.match(/image.*/)) { // files[0]의 type이 image이면
+            $('.image_upload_space').css({
+                backgroundImage: "url(" + window.URL.createObjectURL(files[0]) + ")",
+                outline: "none",
+                backgroundSize: "100%",
+                backgroundRepeat: "no-repeat",
+                backgroundPosition: "center"
+            });
+            $('#first_modal').css({
+                display: 'none',
+            });
+            $('#second_modal').css({
+                display: 'flex',
+            });
+        } else {
+            alert('이미지가 아닙니다.');
+            return;
+        }
+    }
+</script>
+<!-------------------------------------------------------------------------------------------------------->
+</body>
+</html>
