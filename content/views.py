@@ -10,7 +10,7 @@ from uuid import uuid4
 
 class Main(APIView):
     def get(self, request):
-        email = request.session['email']
+        email = request.session.get('email', None)
         if email is None:
             return render(request, 'user/login.html')
 

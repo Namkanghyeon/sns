@@ -24,6 +24,9 @@
     <style>
         .icon_buttons {
             cursor: pointer;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
         }
 
         .box {
@@ -88,11 +91,26 @@
         <input style="width: 400px; box-shadow: none" class="form-control me-2" type="search" placeholder="Search"
                aria-label="Search">
         <div class="icon_buttons">
-            <span class="material-icons">home</span>
-            <span class="material-icons-outlined">send</span>
-            <span id="nav_bar_add_box" class="material-icons-outlined">add_box</span>
-            <span class="material-icons-outlined">explore</span>
-            <span class="material-icons-outlined">favorite_border</span>
+            <span class="material-icons" style="width: 28px; height: 28px; margin: 1px;">home</span>
+            <span class="material-icons-outlined" style="width: 28px; height: 28px; margin: 1px;">send</span>
+            <span id="nav_bar_add_box" class="material-icons-outlined" style="width: 28px; height: 28px; margin: 1px;">add_box</span>
+            <span class="material-icons-outlined" style="width: 28px; height: 28px; margin: 1px;">explore</span>
+            <span class="material-icons-outlined" style="width: 28px; height: 28px; margin: 1px;">favorite_border</span>
+            <div class="dropdown">
+                <a href="#" role="button" id="dropdownMenuLink"
+                   data-bs-toggle="dropdown" aria-expanded="false">
+                    <div class="box" style="width: 28px; height: 28px; margin: 1px;">
+                        <img class="profile"
+                             src="https://mblogthumb-phinf.pstatic.net/20160625_210/bjy0524_1466833747375ihpeN_PNG/%B7%BF%C3%F7%B8%C1%B0%ED%B6%F3%C0%CC%BE%F0%BB%E7%C1%F8.png?type=w800"/>
+                    </div>
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink" style="left: -150px; margin-top: 5px">
+                    <li><a class="dropdown-item" href="#">프로필</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="/user/logout">로그아웃</a></li>
+                </ul>
+            </div>
+
         </div>
     </div>
 </nav>
