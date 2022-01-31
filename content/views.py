@@ -69,11 +69,22 @@ class Profile(APIView):
         email = request.session.get('email', None)
         if email is None:
             return render(request, 'user/login.html')
-
         user = User.objects.filter(email=email).first()
         if user is None:
             return render(request, 'user/login.html')
-        return render(request, 'content/profile.html', context=dict(user=user))
+
+        my_feed_list = Feed.objects.filter(email=email).all()
+        my_like_list = list(Like.objects.filter(email=email, is_like=True).values_list('feed_id', flat=True))
+        my_like_feed_list = Feed.objects.filter(id__in=my_like_list)
+        my_bookmark_list = list(Bookmark.objects.filter(email=email, is_marked=True).values_list('feed_id', flat=True))
+        my_bookmark_feed_list = Feed.objects.filter(id__in=my_bookmark_list)
+
+        return render(request, 'content/profile.html', context=dict(
+            user=user,
+            my_feed_list=my_feed_list,
+            my_like_feed_list=my_like_feed_list,
+            my_bookmark_feed_list=my_bookmark_feed_list
+        ))
 
 
 class UploadComment(APIView):
@@ -100,10 +111,7 @@ class ToggleLike(APIView):
         like_object = Like.objects.filter(feed_id=feed_id, email=email).first()
 
         if like_object:
-            if like_object.is_like:
-                like_object.is_like = False
-            else:
-                like_object.is_like = True
+            like_object.is_like = is_like
             like_object.save()
         else:
             Like.objects.create(feed_id=feed_id, is_like=is_like, email=email)
@@ -124,10 +132,7 @@ class ToggleBookmark(APIView):
         bookmark_object = Bookmark.objects.filter(feed_id=feed_id, email=email).first()
 
         if bookmark_object:
-            if bookmark_object.is_marked:
-                bookmark_object.is_marked = False
-            else:
-                bookmark_object.is_marked = True
+            bookmark_object.is_marked = is_marked
             bookmark_object.save()
         else:
             Bookmark.objects.create(feed_id=feed_id, is_marked=is_marked, email=email)

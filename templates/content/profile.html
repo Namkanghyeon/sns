@@ -131,7 +131,7 @@
                 {{ user.nickname }}
             </div>
             <div style="margin-right: 40px">
-                <button id="button_image_upload">
+                <button id="button_image_upload" type="button" class="btn btn-secondary">
                     프로필 사진 편집
                 </button>
                 <input type="file" id="input_image_upload" onchange="profile_image_upload()" style="display: none"/>
@@ -154,6 +154,72 @@
         <div style="flex: 1; display: flex; flex-direction: row; align-items: center">
             이름
         </div>
+    </div>
+</div>
+
+<div style="border-top: solid 2px rgba(200, 200, 200, 0.6)"></div>
+
+<!-- 버튼들 -->
+<div style="display: flex; flex-direction: row; justify-content: center">
+    <div id="button_feed_list" style="margin: 30px; display: flex; align-items: center; cursor: pointer">
+        <span style="margin-right: 10px"
+              class="material-icons-outlined">grid_on</span>내
+        게시물
+    </div>
+    <div id="button_like_feed_list" style="margin: 30px; display: flex; align-items: center; cursor: pointer">
+        <span style="margin-right: 10px"
+              class="material-icons-outlined">favorite_border</span>
+        좋아요
+    </div>
+    <div id="button_bookmark_feed_list" style="margin: 30px; display: flex; align-items: center; cursor: pointer">
+        <span style="margin-right: 10px"
+              class="material-icons-outlined">bookmark_border</span>
+        북마크
+    </div>
+</div>
+
+<!-- 내 게시물 -->
+<div id="my_feed_list"
+     style="width: 100%; min-width: 1000px; display: flex; align-items: center; justify-content: center">
+    <div style="display: flex; flex-direction: row; flex-wrap: wrap; width: 1000px; justify-content: center">
+        {% for feed in my_feed_list %}
+            <div style="width: 300px; height: 300px; margin: 10px 10px">
+                <div>
+                    <img style="width: 300px; height: 300px; object-fit: cover"
+                         src="{% get_media_prefix %}{{ feed.image }}"/>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- 좋아요 -->
+<div id="my_like_feed_list"
+     style="width: 100%; min-width: 1000px; display: none; align-items: center; justify-content: center">
+    <div style="display: flex; flex-direction: row; flex-wrap: wrap; width: 1000px; justify-content: center">
+        {% for feed in my_like_feed_list %}
+            <div style="width: 300px; height: 300px; margin: 10px 10px">
+                <div>
+                    <img style="width: 300px; height: 300px; object-fit: cover"
+                         src="{% get_media_prefix %}{{ feed.image }}"/>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- 북마크 -->
+<div id="my_bookmark_feed_list"
+     style="width: 100%; min-width: 1000px; display: none; align-items: center; justify-content: center">
+    <div style="display: flex; flex-direction: row; flex-wrap: wrap; width: 1000px; justify-content: center">
+        {% for feed in my_bookmark_feed_list %}
+            <div style="width: 300px; height: 300px; margin: 10px 10px">
+                <div>
+                    <img style="width: 300px; height: 300px; object-fit: cover"
+                         src="{% get_media_prefix %}{{ feed.image }}"/>
+                </div>
+            </div>
+        {% endfor %}
     </div>
 </div>
 
@@ -340,7 +406,43 @@
         $('#second_modal').css({
             display: 'none'
         });
-    })
+    });
+
+    $('#button_feed_list').click(function () {
+        $('#my_feed_list').css({
+            display: 'flex',
+        });
+        $('#my_like_feed_list').css({
+            display: 'none',
+        });
+        $('#my_bookmark_feed_list').css({
+            display: 'none',
+        });
+    });
+
+    $('#button_like_feed_list').click(function () {
+        $('#my_feed_list').css({
+            display: 'none',
+        });
+        $('#my_like_feed_list').css({
+            display: 'flex',
+        });
+        $('#my_bookmark_feed_list').css({
+            display: 'none',
+        });
+    });
+
+    $('#button_bookmark_feed_list').click(function () {
+        $('#my_feed_list').css({
+            display: 'none',
+        });
+        $('#my_like_feed_list').css({
+            display: 'none',
+        });
+        $('#my_bookmark_feed_list').css({
+            display: 'flex',
+        });
+    });
 </script>
 <!-------------------------------------------------------------------------------------------------------->
 </body>
