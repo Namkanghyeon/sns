@@ -150,14 +150,19 @@
                     좋아합니다
                 </div>
                 <div style="margin: 1px 10px; text-align: left; font-size: 15px">
-                    <b>{{ feed.user_id }}</b>{{ feed.content }}</div>
+                    <b>{{ feed.nickname }}</b>{{ feed.content }}</div>
                 <div style="margin: 1px 10px; text-align: left; font-size: 12px; color: gray">댓글 10개 모두 보기</div>
-                {% for comment in feed.comment_list %}
-                    <div style="margin: 1px 10px; text-align: left; font-size: 15px"><b>{{ comment.nickname }}</b> {{ comment.content }}</div>
-                {% endfor %}
+                <div id="comment_list_{{ feed.id }}">
+                    {% for comment in feed.comment_list %}
+                        <div style="margin: 1px 10px; text-align: left; font-size: 15px">
+                            <b>{{ comment.nickname }}</b> {{ comment.content }}</div>
+                    {% endfor %}
+                </div>
                 <div style="display: flex; flex-direction: row; align-items: center; height: 36px; border-top: 1px solid gray">
-                    <input style="box-shadow: none; font-size: 14px; border: none;" type="text" class="form-control" placeholder="댓글 달기">
-                    <div style="width: 54px; color: blue; font-weight: bold; cursor:pointer;">
+                    <input id="comment_{{ feed.id }}" class="form-control"
+                           style="box-shadow: none; font-size: 14px; border: none;" type="text" placeholder="댓글 달기">
+                    <div feed_id="{{ feed.id }}" class="upload_comment"
+                         style="width: 54px; color: blue; font-weight: bold; cursor:pointer;">
                         게시
                     </div>
                 </div>
@@ -442,6 +447,39 @@
             display: 'none',
         });
     });
+
+    $('.upload_comment').click(function (event) {
+        const feed_id = event.target.attributes.getNamedItem('feed_id').value;
+        const comment_id = 'comment_' + feed_id;
+        const content = $('#' + comment_id).val();
+        if (content.length === 0) {
+            alert('댓글을 입력하세요');
+        } else {
+            $.ajax({
+                url: "/content/comment",
+                data: JSON.stringify({ // stringify 안하면 bad request 400 뜸
+                    feed_id: feed_id,
+                    content: content,
+                }),
+                method: "POST",
+                contentType: "application/json", // 명시 안하면 unsupported media type 415 뜸
+                success: function (data) {
+                    console.log('성공');
+                    $('#comment_list_' + feed_id).append(
+                        '<div style="margin: 1px 10px; text-align: left; font-size: 15px"><b>{{ user.nickname }}</b> ' + content + '</div>'
+                    )
+                },
+                error: function (request, status, error) {
+                    console.log('에러');
+                },
+                complete: function () {
+                    console.log('완료');
+                    $('#' + comment_id).val('');
+                }
+            })
+        }
+    });
+
 </script>
 <!-------------------------------------------------------------------------------------------------------->
 </body>

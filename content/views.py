@@ -31,6 +31,7 @@ class Main(APIView):
                     nickname=comment_user.nickname,
                 ))
             feed_list.append(dict(
+                id=feed.id,
                 image=feed.image,
                 content=feed.content,
                 profile_image=user.profile_image,
@@ -73,9 +74,9 @@ class Profile(APIView):
 class UploadComment(APIView):
     def post(self, request):
         feed_id = request.data.get('feed_id', None)
-        comment_content = request.data.get('comment_content', None)
+        content = request.data.get('content', None)
         email = request.session.get('email', None)
 
-        Comment.objects.create(feed_id=feed_id, comment_content=comment_content, email=email)
+        Comment.objects.create(feed_id=feed_id, content=content, email=email)
 
         return Response(status=200)
