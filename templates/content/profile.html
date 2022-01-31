@@ -166,7 +166,7 @@
                 새 이미지 업로드
             </div>
             <div style="cursor: pointer; width: 40px; display: flex; justify-content: center; align-items: center;">
-                <span class="material-icons-outlined">close</span>
+                <span class="modal_close material-icons-outlined">close</span>
             </div>
         </div>
         <div class="image_upload_space" style="border: 1px dashed gray; border-radius: 20px;height: 92%;"></div>
@@ -182,7 +182,7 @@
                 새 이미지 업로드
             </div>
             <div style="cursor: pointer; width: 40px; display: flex; justify-content: center; align-items: center;">
-                <span class="material-icons-outlined">close</span>
+                <span class="modal_close material-icons-outlined">close</span>
             </div>
         </div>
         <div style="display: flex; flex-direction: row; height: 90%; border-top: 1px gray solid">
@@ -221,20 +221,14 @@
         })
     });
     $('#feed_create_button').click(function () {
-        alert('공유 눌렀음')
-
         const file = files[0];
         const image = files[0].name;
         const content = $('#input_feed_content').val();
-        const user_id = 'andy0011'; // 일단 하드코딩
-        const profile_image = 'https://w.namu.la/s/2294cebccfe53949b3ba77d247da7421078f45fe2f0e0bb8dc461dab9826b7f9863d6fdf736af793d1fab7edeffc5beb7dbeca05438e4c97a5478f3955dc3dc264a2b32f2d008fc257401ea5f522c77a'; // 일단 하드코딩
 
         const fd = new FormData();
         fd.append('file', file);
         fd.append('image', image);
         fd.append('content', content);
-        fd.append('user_id', user_id);
-        fd.append('profile_image', profile_image);
 
         $.ajax({
             url: "/content/upload",
@@ -305,7 +299,6 @@
             });
         } else {
             alert('이미지가 아닙니다.');
-            return;
         }
     }
 

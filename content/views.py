@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from .models import Feed
+from .models import Feed, Comment, Like, Bookmark
 from user.models import User
 from sns.settings import MEDIA_ROOT
 import os
@@ -22,16 +22,28 @@ class Main(APIView):
         feed_list = []
         for feed in feed_object_list:
             user = User.objects.filter(email=feed.email).first()
-            feed_list.append(dict(image=feed.image,
-                                  content=feed.content,
-                                  profile_image=user.profile_image,
-                                  like_count=feed.like_count,
-                                  nickname=user.nickname))
+            comment_object_list = Comment.objects.filter(feed_id=feed.id)
+            comment_list = []
+            for comment in comment_object_list:
+                comment_user = User.objects.filter(email=comment.email).first()
+                comment_list.append(dict(
+                    content=comment.content,
+                    nickname=comment_user.nickname,
+                ))
+            feed_list.append(dict(
+                image=feed.image,
+                content=feed.content,
+                profile_image=user.profile_image,
+                # like_count=feed.like_count,
+                nickname=user.nickname,
+                comment_list=comment_list,
+            ))
         return render(request, 'sns/main.html', context=dict(feed_list=feed_list, user=user))
 
 
 class UploadFeed(APIView):
     def post(self, request):
+        email = request.session.get('email', None)
         file = request.FILES['file']
         image = uuid4().hex
         save_path = os.path.join(MEDIA_ROOT, image)
@@ -40,9 +52,8 @@ class UploadFeed(APIView):
             for chunk in file.chunks():
                 destination.write(chunk)
         content = request.data.get('content')
-        email = request.session.get('email', None)
 
-        Feed.objects.create(image=image, content=content, email=email, like_count=0)
+        Feed.objects.create(email=email, image=image, content=content)
 
         return Response(status=200)
 
@@ -57,3 +68,14 @@ class Profile(APIView):
         if user is None:
             return render(request, 'user/login.html')
         return render(request, 'content/profile.html', context=dict(user=user))
+
+
+class UploadComment(APIView):
+    def post(self, request):
+        feed_id = request.data.get('feed_id', None)
+        comment_content = request.data.get('comment_content', None)
+        email = request.session.get('email', None)
+
+        Comment.objects.create(feed_id=feed_id, comment_content=comment_content, email=email)
+
+        return Response(status=200)
