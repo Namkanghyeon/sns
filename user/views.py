@@ -1,8 +1,12 @@
+import os
+from uuid import uuid4
+
 from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from .models import User
 from django.contrib.auth.hashers import make_password
+from sns.settings import MEDIA_ROOT
 
 
 class Join(APIView):
@@ -19,7 +23,7 @@ class Join(APIView):
                             name=name,
                             nickname=nickname,
                             password=make_password(password),
-                            profile_image='default_profile.jpg'
+                            profile_image='default_profile.jpeg'
                             )
 
         return Response(status=200)
@@ -49,3 +53,22 @@ class Logout(APIView):
     def get(self, request):
         request.session.flush()
         return render(request, "user/login.html")
+
+
+class UploadProfile(APIView):
+    def post(self, request):
+        file = request.FILES['file']
+        email = request.data.get('email')
+
+        profile_image = uuid4().hex
+        save_path = os.path.join(MEDIA_ROOT, profile_image)
+        # media 디렉토리에 이미지 파일 자체를 저장
+        with open(save_path, 'wb+') as destination:
+            for chunk in file.chunks():
+                destination.write(chunk)
+
+        user = User.objects.filter(email=email).first()
+        user.profile_image = profile_image
+        user.save()
+
+        return Response(status=200)

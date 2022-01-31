@@ -25,13 +25,12 @@ class Main(APIView):
 class UploadFeed(APIView):
     def post(self, request):
         file = request.FILES['file']
-        uuid_name = uuid4().hex
-        save_path = os.path.join(MEDIA_ROOT, uuid_name)
+        image = uuid4().hex
+        save_path = os.path.join(MEDIA_ROOT, image)
         # media 디렉토리에 이미지 파일 자체를 저장
         with open(save_path, 'wb+') as destination:
             for chunk in file.chunks():
                 destination.write(chunk)
-        image = uuid_name
         content = request.data.get('content')
         user_id = request.data.get('user_id')
         profile_image = request.data.get('profile_image')
@@ -39,3 +38,14 @@ class UploadFeed(APIView):
         Feed.objects.create(image=image, content=content, user_id=user_id, profile_image=profile_image, like_count=0)
 
         return Response(status=200)
+
+class Profile(APIView):
+    def get(self, request):
+        email = request.session.get('email', None)
+        if email is None:
+            return render(request, 'user/login.html')
+
+        user = User.objects.filter(email=email).first()
+        if user is None:
+            return render(request, 'user/login.html')
+        return render(request, 'content/profile.html', context=dict(user=user))
