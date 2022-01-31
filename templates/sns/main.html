@@ -138,15 +138,31 @@
                 </div>
                 <div style="margin: 4px 10px; display: flex; flex-direction: row; justify-content: space-between">
                     <div>
-                        <span class="material-icons-outlined">favorite_border</span>
-                        <span class="material-icons-outlined">mode_comment</span>
-                        <span class="material-icons-outlined">send</span>
+                        <span id="like_{{ feed.id }}" feed_id="{{ feed.id }}"
+                              class="like material-icons-outlined"
+                              style="cursor: pointer; color: red">
+                        {% if feed.is_liked %}
+                            favorite
+                        {% else %}
+                            favorite_border
+                        {% endif %}
+                        </span>
+                        <span class="material-icons-outlined" style="cursor: pointer;">mode_comment</span>
+                        <span class="material-icons-outlined" style="cursor: pointer;">send</span>
                     </div>
                     <div>
-                        <span class="material-icons-outlined">bookmark_border</span>
+                        <span id="bookmark_{{ feed.id }}" feed_id="{{ feed.id }}"
+                              class="bookmark material-icons-outlined"
+                              style="cursor: pointer">
+                        {% if feed.is_marked %}
+                            bookmark
+                        {% else %}
+                            bookmark_border
+                        {% endif %}
+                        </span>
                     </div>
                 </div>
-                <div style="margin: 1px 10px; text-align: left; font-size: 14px">강현이 <b>외 0명</b>이
+                <div style="margin: 1px 10px; text-align: left; font-size: 14px">강현이 <b>외 {{ feed.like_count }}명</b>이
                     좋아합니다
                 </div>
                 <div style="margin: 1px 10px; text-align: left; font-size: 15px">
@@ -480,6 +496,71 @@
         }
     });
 
+    $('.like').click(function (event) {
+        const feed_id = event.target.attributes.getNamedItem('feed_id').value;
+        const like_id = event.target.id;
+        const like_text = $.trim($('#' + like_id).html());
+        let is_like;
+        if (like_text === 'favorite') {
+            $('#' + like_id).html('favorite_border')
+            is_like = 'false'
+        } else {
+            $('#' + like_id).html('favorite')
+            is_like = 'true'
+        }
+
+        $.ajax({
+            url: "/content/like",
+            data: JSON.stringify({ // stringify 안하면 bad request 400 뜸
+                feed_id: feed_id,
+                is_like: is_like,
+            }),
+            method: "POST",
+            contentType: "application/json", // 명시 안하면 unsupported media type 415 뜸
+            success: function (data) {
+                console.log('성공');
+            },
+            error: function (request, status, error) {
+                console.log('에러');
+            },
+            complete: function () {
+                console.log('완료');
+            }
+        })
+    })
+
+    $('.bookmark').click(function (event) {
+        const feed_id = event.target.attributes.getNamedItem('feed_id').value;
+        const bookmark_id = event.target.id;
+        const bookmark_text = $.trim($('#' + bookmark_id).html());
+        let is_marked;
+        if (bookmark_text === 'bookmark') {
+            $('#' + bookmark_id).html('bookmark_border')
+            is_marked = 'false'
+        } else {
+            $('#' + bookmark_id).html('bookmark')
+            is_marked = 'true'
+        }
+
+        $.ajax({
+            url: "/content/bookmark",
+            data: JSON.stringify({ // stringify 안하면 bad request 400 뜸
+                feed_id: feed_id,
+                is_marked: is_marked,
+            }),
+            method: "POST",
+            contentType: "application/json", // 명시 안하면 unsupported media type 415 뜸
+            success: function (data) {
+                console.log('성공');
+            },
+            error: function (request, status, error) {
+                console.log('에러');
+            },
+            complete: function () {
+                console.log('완료');
+            }
+        })
+    })
 </script>
 <!-------------------------------------------------------------------------------------------------------->
 </body>
