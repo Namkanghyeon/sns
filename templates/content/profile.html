@@ -84,14 +84,15 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light" style="position: fixed; width: 100%; height: 56px">
     <div class="container-fluid"
          style="justify-content: space-between; flex-wrap: nowrap; min-width: 1000px; height: 40px">
-        <a class="navbar-brand" href="#">
+        <a class="navbar-brand" href="/main">
             <img style="width: 100px"
                  src="https://www.instagram.com/static/images/web/mobile_nav_type_logo.png/735145cfe0a4.png">
         </a>
         <input style="width: 400px; box-shadow: none" class="form-control me-2" type="search" placeholder="Search"
                aria-label="Search">
         <div class="icon_buttons">
-            <span class="material-icons" style="width: 28px; height: 28px; margin: 1px;">home</span>
+            <a href="/main" style="color: black"/><span class="material-icons"
+                                                        style="width: 28px; height: 28px; margin: 1px;">home</span></a>
             <span class="material-icons-outlined" style="width: 28px; height: 28px; margin: 1px;">send</span>
             <span id="nav_bar_add_box" class="material-icons-outlined" style="width: 28px; height: 28px; margin: 1px;">add_box</span>
             <span class="material-icons-outlined" style="width: 28px; height: 28px; margin: 1px;">explore</span>
@@ -104,7 +105,7 @@
                              src="{% get_media_prefix %}{{ user.profile_image }}"/>
                     </div>
                 </a>
-                <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink" style="left: -150px; margin-top: 5px">
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink" style="left: -128px; margin-top: 5px">
                     <li><a class="dropdown-item" href="/content/profile">프로필</a></li>
                     <li>
                         <hr class="dropdown-divider">
@@ -164,7 +165,7 @@
             <div style="font-size: 20px; font-weight: bold">
                 새 이미지 업로드
             </div>
-            <div style="width: 40px; display: flex; justify-content: center; align-items: center;">
+            <div style="cursor: pointer; width: 40px; display: flex; justify-content: center; align-items: center;">
                 <span class="material-icons-outlined">close</span>
             </div>
         </div>
@@ -180,7 +181,7 @@
             <div style="font-size: 20px; font-weight: bold">
                 새 이미지 업로드
             </div>
-            <div style="width: 40px; display: flex; justify-content: center; align-items: center;">
+            <div style="cursor: pointer; width: 40px; display: flex; justify-content: center; align-items: center;">
                 <span class="material-icons-outlined">close</span>
             </div>
         </div>
@@ -339,6 +340,14 @@
         })
     }
 
+    $('.modal_close').click(function () {
+        $('#first_modal').css({
+            display: 'none'
+        });
+        $('#second_modal').css({
+            display: 'none'
+        });
+    })
 </script>
 <!-------------------------------------------------------------------------------------------------------->
 </body>
