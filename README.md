@@ -1,2 +1,2 @@
 # sns
-making a sns service
+making a simple sns service with Django
