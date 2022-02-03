@@ -136,3 +136,7 @@ AUTH_USER_MODEL = 'user.User'
 
 # 브라우저 닫으면 세션 정보 삭제
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+
+# 세션 타임아웃
+SESSION_COOKIE_AGE = 1200
+SESSION_SAVE_EVERY_REQUEST = True
