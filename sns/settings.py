@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     # 생성한 app들은 여기에 추가해줘야 나중에 모델을 db로 migration할 때 자동으로 해줌
     'sns',
     'content',
-    'user'
+    'user',
 ]
 
 MIDDLEWARE = [
