@@ -26,7 +26,8 @@ SECRET_KEY = 'django-insecure-x&j#c6t*(j)b)i!aaf^r362cu4oqv3-ljdn$4_^f!mhu=&jy(0
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    ".ap-northeast-2.compute.amazonaws.com"
+    '127.0.0.1',
+    '.ap-northeast-2.compute.amazonaws.com',
 ]
 
 # Application definition
@@ -132,3 +133,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # 커스텀 유저 모델 사용
 AUTH_USER_MODEL = 'user.User'
+
+# 브라우저 닫으면 세션 정보 삭제
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True

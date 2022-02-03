@@ -49,6 +49,7 @@ class Login(APIView):
         else:
             return Response(status=404, data=dict(message="회원정보가 잘못되었습니다."))
 
+
 class Logout(APIView):
     def get(self, request):
         request.session.flush()

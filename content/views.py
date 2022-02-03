@@ -21,7 +21,7 @@ class Main(APIView):
         feed_object_list = Feed.objects.all().order_by('-id')  # select * from content_feed
         feed_list = []
         for feed in feed_object_list:
-            user = User.objects.filter(email=feed.email).first()
+            feed_user = User.objects.filter(email=feed.email).first()
             like_count = Like.objects.filter(feed_id=feed.id, is_like=True).count()
             comment_object_list = Comment.objects.filter(feed_id=feed.id)
             comment_list = []
@@ -37,9 +37,9 @@ class Main(APIView):
                 id=feed.id,
                 image=feed.image,
                 content=feed.content,
-                profile_image=user.profile_image,
+                profile_image=feed_user.profile_image,
                 like_count=like_count,
-                nickname=user.nickname,
+                nickname=feed_user.nickname,
                 comment_list=comment_list,
                 is_liked=is_liked,  # 내가 이 피드에 좋아요를 눌렀는지
                 is_marked=is_marked,  # 내가 이 피드에 북마크를 눌렀는지
