@@ -81,8 +81,12 @@ WSGI_APPLICATION = 'sns.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'sns',
+        'USER': 'andy0011',
+        'PASSWORD': '00000000',
+        'HOST': 'sns-project-nam.ccjgcut3axtl.ap-northeast-2.rds.amazonaws.com',
+        'PORT': '5432',
     }
 }
 
