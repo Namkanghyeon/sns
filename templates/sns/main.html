@@ -20,7 +20,7 @@
     <!-- jQuery -->
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
 
-    <title>Hello, world!</title>
+    <title>little sns</title>
     <style>
         .icon_buttons {
             cursor: pointer;
@@ -166,7 +166,7 @@
                 </div>
                 <div style="margin: 1px 10px; text-align: left; font-size: 15px">
                     <b>{{ feed.nickname }}</b>{{ feed.content }}</div>
-                <div style="margin: 1px 10px; text-align: left; font-size: 12px; color: gray">댓글 10개 모두 보기</div>
+{#                <div style="margin: 1px 10px; text-align: left; font-size: 12px; color: gray">댓글 10개 모두 보기</div>#}
                 <div id="comment_list_{{ feed.id }}">
                     {% for comment in feed.comment_list %}
                         <div style="margin: 1px 10px; text-align: left; font-size: 15px">

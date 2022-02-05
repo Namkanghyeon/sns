@@ -16,11 +16,7 @@
     <!-- jQuery -->
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
 
-    <style>
-
-    </style>
-
-    <title>Hello, world!</title>
+    <title>little sns</title>
 </head>
 <body style="background-color: #fafafa">
 <div style="display: flex; justify-content: center; align-items: center; margin-top: 100px;">
@@ -35,7 +31,7 @@
         <div class="form-floating">
             <input type="email" class="form-control" id="input_email" placeholder="휴대폰 번호 또는 이메일 주소"
                    style="font-size: 14px; box-shadow: none; height: 50px; margin-bottom: 5px; border-radius: 10px">
-            <label for="input_email" style="font-size: 14px;">휴대폰 번호 또는 이메일 주소</label>
+            <label for="input_email" style="font-size: 14px;">이메일 주소</label>
         </div>
         <div class="form-floating">
             <input type="text" class="form-control" id="input_name" placeholder="성명"
@@ -64,7 +60,6 @@
 <!-- jQuery -->
 <script>
     $('#join_button').click(function () {
-
         const email = $('#input_email').val()
         const name = $('#input_name').val()
         const nickname = $('#input_nickname').val()

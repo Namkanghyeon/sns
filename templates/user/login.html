@@ -20,7 +20,7 @@
 
     </style>
 
-    <title>Hello, world!</title>
+    <title>little sns</title>
 </head>
 <body style="background-color: #fafafa">
 <div style="display: flex; justify-content: center; align-items: center; margin-top: 100px;">
@@ -32,7 +32,7 @@
         <div class="form-floating">
             <input type="email" class="form-control" id="input_email" placeholder="이메일 주소"
                    style="font-size: 14px; box-shadow: none; height: 50px; margin-bottom: 5px; border-radius: 10px">
-            <label for="input_email" style="font-size: 14px;">전화번호, 사용자 이름 또는 이메일</label>
+            <label for="input_email" style="font-size: 14px;">이메일</label>
         </div>
         <div class=" form-floating">
             <input type="password" class="form-control" id="input_password" placeholder="비밀번호"
@@ -51,7 +51,6 @@
 <!-- jQuery -->
 <script>
     $('#login_button').click(function () {
-
         const email = $('#input_email').val()
         const password = $('#input_password').val()
 
@@ -68,6 +67,7 @@
                 location.replace('/')
             },
             error: function (request, status, error) {
+                console.log('{{ message }}')
                 console.log('에러');
             },
             complete: function () {
