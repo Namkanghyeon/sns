@@ -1,10 +1,10 @@
+import boto3
 from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from .models import Feed, Comment, Like, Bookmark
 from user.models import User
-from sns.settings import MEDIA_ROOT
-import os
+from sns.settings import AWS_STORAGE_BUCKET_NAME, AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY
 from uuid import uuid4
 
 
@@ -51,15 +51,24 @@ class UploadFeed(APIView):
     def post(self, request):
         email = request.session.get('email', None)
         file = request.FILES['file']
-        image = uuid4().hex
-        save_path = os.path.join(MEDIA_ROOT, image)
-        # media 디렉토리에 이미지 파일 자체를 저장
-        with open(save_path, 'wb+') as destination:
-            for chunk in file.chunks():
-                destination.write(chunk)
         content = request.data.get('content')
 
-        Feed.objects.create(email=email, image=image, content=content)
+        image_name = uuid4().hex
+        save_path = f'https://s3.ap-northeast-2.amazonaws.com/{AWS_STORAGE_BUCKET_NAME}/feed_image/{image_name}'
+
+        # s3에 upload
+        s3_client = boto3.client('s3', aws_access_key_id=AWS_ACCESS_KEY_ID, aws_secret_access_key=AWS_SECRET_ACCESS_KEY)
+        s3_client.upload_fileobj(
+            file,
+            AWS_STORAGE_BUCKET_NAME,
+            f'feed_image/{image_name}',
+            ExtraArgs={
+                "ContentType": file.content_type
+            }
+        )
+
+        # image url을 feed table에 저장
+        Feed.objects.create(email=email, image=save_path, content=content)
 
         return Response(status=200)
 
